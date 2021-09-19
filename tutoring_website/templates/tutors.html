@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <form method="POST" action="">
+        <select name="selected_tutor" method="GET" onchange="this.form.submit()" data-live-search="true">
+            <option name="test" value="0">Select Tutor</option>
+            {% for tutor in tutors %}
+            {% if tutor == selected_tutor %}
+            <option name="test" value="{{ tutor.id }}" selected>{{ tutor.first_name }} {{tutor.last_name}}</option>
+            {% else %}
+            <option name="test" value="{{ tutor.id }}">{{ tutor.first_name }} {{tutor.last_name}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    <form>
+
+    {% if selected_tutor != None %}
+    <div class="container pt-3">
+        <h3> {{ selected_tutor.first_name }} {{ selected_tutor.last_name }} </h3>
+        {% for student in selected_tutor.students %}
+        <div class="container p-3">
+            {{ student.first_name }} {{ student.last_name }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock content %}

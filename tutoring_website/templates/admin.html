@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1> Admin: {{current_user.first_name}} {{current_user.last_name}} </h1>
+
+{% for request in requests %}
+
+<form method="POST" action="">
+    <article class="media content-section">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2">{{ request.email }}</a>
+            </div>
+            <h2><a class="article-title">{{ request.first_name }} {{ request.last_name }}</a></h2>
+
+            <div class="row justify-content-md-center">
+                <div class="col">
+                    <select name="selected_tutor" method="GET" data-live-search="true">
+                        <option value="0, 0">Select Tutor</option>
+                    {% for tutor in request.tutors %}
+                        <option value="{{ tutor.id }}, {{request.id}}">{{ tutor.first_name }} {{tutor.last_name}}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+                <div class="col col-auto">
+                    <input type="submit" name="validate" value="Validate" class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+
+    </article>
+</form>
+
+{% endfor %}
+
+{% endblock content %}
