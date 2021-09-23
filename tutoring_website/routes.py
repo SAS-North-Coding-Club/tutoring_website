@@ -20,9 +20,11 @@ def admin():
             db.session.delete(req)
             db.session.commit()
 
+    tutors = Tutor.query.all()
+
     requests = Request.query.all()
 
-    return render_template('admin.html', requests=requests)
+    return render_template('admin.html', requests=requests, tutors=tutors)
 
 
 @app.route("/test", methods=['GET', 'POST'])
@@ -73,15 +75,25 @@ def tutor_view():
 @ app.route("/", methods=['GET', 'POST'])
 def request_tutor():
     form = RequestForm()
+    pr = Request.query.filter_by(first_name='Alejandro')
     if form.validate_on_submit():
-        request = Request(email=form.email.data,
-                          first_name=form.first_name.data,
-                          last_name=form.last_name.data)
-        db.session.add(request)
-        db.session.commit()
-        return redirect(url_for('test'))
+        return redirect('login')
+        if request.method == 'POST':
+            if request.form.get('date') != None:
+                return redirect('login')
+            # if 'date' in request.form and 'time' in request.form:
+                # date = request.form.get('date')
+                # time = request.form.get('time')
+                # request = Request(email=form.email.data,
+                                 # first_name=form.first_name.data,
+                                  # last_name=form.last_name.data,
+                                #  date=date,
+                               #   time=time)
+               # db.session.add(request)
+              #  db.session.commit()
+              #  return redirect(url_for('register'))
 
-    return render_template('request.html', form=form)
+    return render_template('request.html', form=form, pr=pr)
 
 
 @ app.route("/register", methods=['GET', 'POST'])
@@ -108,7 +120,7 @@ def register():
     return render_template('register.html', form=form)
 
 
-@app.route("/login", methods=['GET', 'POST'])
+@ app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('test'))
@@ -126,8 +138,8 @@ def login():
     return render_template('login.html', form=form)
 
 
-@app.route("/logout")
-@login_required
+@ app.route("/logout")
+@ login_required
 def logout():
     logout_user()
     return redirect(url_for('request_tutor'))

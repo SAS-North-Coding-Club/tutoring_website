@@ -49,6 +49,8 @@ class Request(db.Model):
     email = db.Column(db.String(120), nullable=False)
     first_name = db.Column(db.String(25), nullable=False)
     last_name = db.Column(db.String(25), nullable=False)
+    date = db.Column(db.String(10), nullable=False)
+    time = db.Column(db.String(5), nullable=False)
 
     def __repr__(self):
         return f"Request('{self.email}', '{self.first_name}', '{self.last_name}')"

@@ -1,8 +1,43 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1> Admin: {{current_user.first_name}} {{current_user.last_name}} </h1>
+<h2> Admin: {{current_user.first_name}} {{current_user.last_name}} </h2>
 
-{% for request in requests %}
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-6">
+            <div class="row">
+                <article class="media content-section">
+                    <div class="media-body">
+                        <h2>Requests</h2>
+                    </div>
+                </article>
+            </div>
+            <div class="scroll-snap">
+                {%for tutor in tutors%}
+                <form method="POST" action="">
+                    <article id="tutor_profile" class="media content-section" onclick="open_tutor_profile()">
+                        <div class="scroll-snap-item">
+                            <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pictures/default.png') }}" alt="...">
+                            <div class="media-body">
+                                <h6 class="mt-0 mb-1">{{tutor.first_name}} {{tutor.last_name}}</h6>
+                            </div>
+                        </div>
+                    </article>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+    function open_tutor_profile() {
+        document.getElementById()
+    }
+</script>
+
+<!-- {% for request in requests %}
 
 <form method="POST" action="">
     <article class="media content-section">
@@ -30,6 +65,6 @@
     </article>
 </form>
 
-{% endfor %}
+{% endfor %} -->
 
 {% endblock content %}
