@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 module.exports = {
   register (req, res, next) {
-    const schema = Joi.object({
+    const result = Joi.object({
       username: Joi.string().min(6).max(32).required().messages({
         'any.required': '{#label} is required.',
         'string.empty': '{#label} is required.',
@@ -15,7 +15,7 @@ module.exports = {
         'string.email': '{#value} is not a valid email.'
       }),
       password: Joi.string().min(6).max(32).required().regex(
-        new RegExp('^[a-zA-Z0-9]{6,32}$') //eslint-disable-line
+        new RegExp('^[a-zA-Z0-9]{1,100}$') //eslint-disable-line
       ).messages({
         'any.required': '{#label} is required.',
         'string.empty': '{#label} is required.',
@@ -28,10 +28,8 @@ module.exports = {
         'string.empty': '{#label} is required.',
         'any.only': '{#label} does not match "password"'
       })
-    }).options({ abortEarly: false })
-
-    const { error } = schema.validate(req.body) //eslint-disable-line
-
+    }).options({ abortEarly: false }).validate(req.body)
+    const error = result.error
     if (error) {
       res.status(400).send({ errors: (error.details || []).map(er => { return { label: er.path[0], message: er.message } }) })
     } else {

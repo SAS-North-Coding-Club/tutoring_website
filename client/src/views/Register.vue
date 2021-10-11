@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="form">
     <v-container>
       <h1>This is an register page</h1>
       <v-row>
@@ -8,7 +8,7 @@
           md="4"
         >
           <v-text-field type="username" name="username" v-model="username" placeholder="username" 
-            :error-messages="errors.username"
+            :rules="rules.username"
           />
         </v-col>
 
@@ -17,7 +17,7 @@
           md="4"
         >
           <v-text-field type="email" name="email" v-model="email" placeholder="email" 
-            :error-messages="errors.email"
+            :rules="rules.email"
           />
         </v-col>
 
@@ -26,7 +26,7 @@
         md="4"
         >
           <v-text-field type="password" name="password" v-model="password" placeholder="password" 
-            :error-messages="errors.password"
+            :rules="rules.password"
           />
         </v-col>
 
@@ -35,9 +35,8 @@
         md="4"
         >
           <v-text-field type="confirm_password" name="confirm_password" v-model="confirm_password" placeholder="confirm_password" 
-            :error-messages="errors.confirm_password"
+            :rules="rules.confirm_password"
           />
-          <div class="error" v-html="errors.confirm_password" />
         </v-col>
       <v-btn color="success" v-on:click.prevent="register">Register</v-btn>
       </v-row>
@@ -56,12 +55,24 @@ export default {
       email: '',
       password: '',
       confirm_password: '',
-      errors: {}
+      errors: {
+        username: '',
+        email: '',
+        password: '',
+        confirm_password: ''
+      },
+      rules: {
+        username: [() => this.errors.username === '' || this.errors.username],
+        email: [() => this.errors.email === '' || this.errors.email],
+        password: [() => this.errors.password === '' || this.errors.password],
+        confirm_password: [() => this.errors.confirm_password === '' || this.errors.confirm_password]
+      }
     }
   },
 
   methods: {
     async register () {
+      
       try {
         await AuthenticationService.register({
           username: this.username,
@@ -76,6 +87,8 @@ export default {
           this.errors[errors[i].label] = errors[i].message
         }
       }
+
+      this.$refs.form.validate()
     }
   }
 }
