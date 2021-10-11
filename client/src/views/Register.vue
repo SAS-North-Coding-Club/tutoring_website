@@ -72,7 +72,8 @@ export default {
 
   methods: {
     async register () {
-      
+      this.$refs.form.resetValidation()
+
       try {
         await AuthenticationService.register({
           username: this.username,
@@ -86,9 +87,8 @@ export default {
         for(let i = 0; i < errors.length; i++) {
           this.errors[errors[i].label] = errors[i].message
         }
+        this.$refs.form.validate()
       }
-
-      this.$refs.form.validate()
     }
   }
 }
